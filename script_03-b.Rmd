@@ -57,9 +57,21 @@ increases <- inner_join(sep_old, sep_new, by = c("id", "title", "name", "departm
   mutate(difference = (u_grad_new - u_grad_old)) %>%
   arrange(desc(difference)) %>%
   slice(1:5)
-View (increases)
 
-?head
+increases %>%
+  gt() %>%
+  tab_header(title = "Top Increases in Enrollment",
+             subtitle = "ID, Title, Name, Department") %>%
+  cols_label(title = "Number",
+             title = "ID",
+             title = "Name",
+             title = "Department",
+             title = "Enrollment")
+             
+    tab_source_note("Harvard Registrar's Office")
+
+
+
 ```
 
 b) Make a table using **gt** which shows the five courses with the biggest decrease.
@@ -77,6 +89,19 @@ View (decreases)
 
 c) Make a nice looking graphic which shows these 10 courses.
 
+```{r}
+
+all_data <- full_join(increases, decreases)
+ggplot(all_data, aes(reorder(name, difference), difference)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 70))
+
+?axis
+  
+  
+
+```
+
 d) Write down some thoughts about what might explain these increases and decreases. Or is it all just random? How would we know?
 
 See [here](https://rpubs.com/dkane/week-3) for my answers. No need to copy exactly what I have done! Make yours better.
@@ -92,6 +117,12 @@ See [here](https://rpubs.com/dkane/week-3) for my answers. No need to copy exact
 With our actual Preceptor Table, how might we investigate the effect of work assigned in the first two weeks? Would the estimated Average Treatment Effect be accurate? Why or why not?
 
 Make a spreadsheet --- I recommend using Google sheets, but anything will do --- which shows a simple version of that actual Preceptor Table. What are the units? What are the outcomes? What is the treatment? What is the causal effect? You may assign whichever of the 10 classes you like to treatment and the rest to control.
+
+```{r}
+
+
+
+```
 
 ## Scene 3
 
