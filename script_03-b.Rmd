@@ -57,18 +57,20 @@ increases <- inner_join(sep_old, sep_new, by = c("id", "title", "name", "departm
   mutate(difference = (u_grad_new - u_grad_old)) %>%
   arrange(desc(difference)) %>%
   slice(1:5)
+increases
 
 increases %>%
   gt() %>%
-  tab_header(title = "Top Increases in Enrollment",
+  tab_header(title = md("**Top Increases in Enrollment**"),
              subtitle = "ID, Title, Name, Department") %>%
   cols_label(title = "Number",
-             title = "ID",
-             title = "Name",
-             title = "Department",
-             title = "Enrollment")
-             
-    tab_source_note("Harvard Registrar's Office")
+             id = "ID",
+             name = "Name",
+             department = "Department",
+             u_grad_old = "Enrollment Sep 1",
+             u_grad_new = "Enrollment Sep 22",
+             difference = "Changes in Enrollment") %>%
+  tab_source_note(md("Source: *Harvard Registrar's Office*"))
 
 
 
@@ -83,7 +85,20 @@ decreases <- inner_join(sep_old, sep_new, by = c("id", "title", "name", "departm
   arrange(difference) %>%
   slice(1:5)
 View (decreases)
+decreases %>%
+  gt() %>%
+  tab_header(title = md("**Top Decreases in Enrollment**"),
+             subtitle = "ID, Title, Name, Department") %>%
+  cols_label(title = "Number",
+             id = "ID",
+             name = "Name",
+             department = "Department",
+             u_grad_old = "Enrollment Sep 1",
+             u_grad_new = "Enrollment Sep 22",
+             difference = "Changes in Enrollment") %>%
+  tab_source_note(md("Source: *Harvard Registrar's Office*"))
 
+?rename
 ```
 
 
@@ -92,12 +107,16 @@ c) Make a nice looking graphic which shows these 10 courses.
 ```{r}
 
 all_data <- full_join(increases, decreases)
+all_data
 ggplot(all_data, aes(reorder(name, difference), difference)) +
   geom_col() +
-  theme(axis.text.x = element_text(angle = 70))
+  theme(axis.text.x = element_text(angle = 70)) +
+  labs(title= "Biggest Changes in Course Enrollment",
+       subtitle = "Between Sep 1 and Sep 22, 2020",
+       x = "Course",
+       y = "Change in Enrollment")
 
-?axis
-  
+
   
 
 ```
