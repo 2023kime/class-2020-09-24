@@ -1,5 +1,6 @@
 ---
 title: "Class 9/24"
+author: "Esther Kim"
 output: html_document
 ---
 

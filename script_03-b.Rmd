@@ -42,6 +42,7 @@ sep_new <-
   group_by(id, title, name, department) %>% 
   summarize(u_grad = sum(u_grad), .groups = "drop") %>% 
   filter(u_grad > 10)
+
 ```
 
 ### Scene 1
@@ -50,7 +51,29 @@ sep_new <-
 
 a) Make a table using **gt** which shows the five courses with the biggest increase. Use the [How to make a table](https://davidkane9.github.io/PPBDS/tools.html#how-to-make-a-table) section of *The Primer*.
 
+```{r 1a}
+
+increases <- inner_join(sep_old, sep_new, by = c("id", "title", "name", "department"), suffix = c("_old", "_new")) %>%
+  mutate(difference = (u_grad_new - u_grad_old)) %>%
+  arrange(desc(difference)) %>%
+  slice(1:5)
+View (increases)
+
+?head
+```
+
 b) Make a table using **gt** which shows the five courses with the biggest decrease.
+
+```{r 1b}
+
+decreases <- inner_join(sep_old, sep_new, by = c("id", "title", "name", "department"), suffix = c("_old", "_new")) %>%
+  mutate(difference = (u_grad_new - u_grad_old)) %>%
+  arrange(difference) %>%
+  slice(1:5)
+View (decreases)
+
+```
+
 
 c) Make a nice looking graphic which shows these 10 courses.
 
